@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import classes from './Quiz.module.css'
 import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz'
-
+import FinishedQuiz from '../../components/FinishedQuiz/FinishedQuiz'
 class Quiz extends Component {
   state = {
     isFinished: false,
@@ -75,7 +75,7 @@ class Quiz extends Component {
         <div className={classes.QuizWrapper}>
           <h1>Answer all these questions</h1>
           {this.state.isFinished ? (
-            <h1>Finished!</h1>
+            <FinishedQuiz />
           ) : (
             <ActiveQuiz
               answers={this.state.quiz[this.state.activeQuestion].answers}
