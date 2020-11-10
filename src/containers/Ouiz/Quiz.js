@@ -4,6 +4,7 @@ import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz'
 
 class Quiz extends Component {
   state = {
+    isFinished: false,
     activeQuestion: 0,
     answerState: null, // {[id]: 'success' 'error'} for colors changing
     quiz: [
@@ -33,6 +34,10 @@ class Quiz extends Component {
   }
 
   onAnswerClickHandler = (answerId) => {
+    if (this.state.answerState) {
+      const key = Object.keys(this.state.answerState)[0]
+      if (this.state.answerState[key] === 'success') return
+    }
     const question = this.state.quiz[this.state.activeQuestion]
 
     if (question.rightAnswerId === answerId) {
@@ -42,7 +47,9 @@ class Quiz extends Component {
 
       const timeout = window.setTimeout(() => {
         if (this.isQuizFinished()) {
-          console.log('Finished')
+          this.setState({
+            isFinished: true,
+          })
         } else {
           this.setState({
             activeQuestion: this.state.activeQuestion + 1,
@@ -67,14 +74,18 @@ class Quiz extends Component {
       <div className={classes.Quiz}>
         <div className={classes.QuizWrapper}>
           <h1>Answer all these questions</h1>
-          <ActiveQuiz
-            answers={this.state.quiz[this.state.activeQuestion].answers}
-            question={this.state.quiz[this.state.activeQuestion].question}
-            onAnswerClick={this.onAnswerClickHandler}
-            quizLenght={this.state.quiz.length}
-            answerNumber={this.state.activeQuestion + 1}
-            state={this.state.answerState}
-          />
+          {this.state.isFinished ? (
+            <h1>Finished!</h1>
+          ) : (
+            <ActiveQuiz
+              answers={this.state.quiz[this.state.activeQuestion].answers}
+              question={this.state.quiz[this.state.activeQuestion].question}
+              onAnswerClick={this.onAnswerClickHandler}
+              quizLenght={this.state.quiz.length}
+              answerNumber={this.state.activeQuestion + 1}
+              state={this.state.answerState}
+            />
+          )}
         </div>
       </div>
     )
