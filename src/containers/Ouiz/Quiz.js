@@ -4,6 +4,7 @@ import ActiveQuiz from '../../components/ActiveQuiz/ActiveQuiz'
 import FinishedQuiz from '../../components/FinishedQuiz/FinishedQuiz'
 class Quiz extends Component {
   state = {
+    results: {}, //{[id]: 'success', 'error'}
     isFinished: false,
     activeQuestion: 0,
     answerState: null, // {[id]: 'success' 'error'} for colors changing
@@ -39,10 +40,17 @@ class Quiz extends Component {
       if (this.state.answerState[key] === 'success') return
     }
     const question = this.state.quiz[this.state.activeQuestion]
+    const results = this.state.results
 
     if (question.rightAnswerId === answerId) {
+      if (results[answerId]) {
+        if (!results[answerId]) {
+          results[answerId] = 'success'
+        }
+      }
       this.setState({
         answerState: { [answerId]: 'success' },
+        results,
       })
 
       const timeout = window.setTimeout(() => {
@@ -59,8 +67,10 @@ class Quiz extends Component {
         window.clearTimeout(timeout)
       }, 1000)
     } else {
+      results[answerId] = 'error'
       this.setState({
         answerState: { [answerId]: 'error' },
+        results,
       })
     }
   }
@@ -75,7 +85,7 @@ class Quiz extends Component {
         <div className={classes.QuizWrapper}>
           <h1>Answer all these questions</h1>
           {this.state.isFinished ? (
-            <FinishedQuiz />
+            <FinishedQuiz results={this.state.results} quiz={this.state.quiz} />
           ) : (
             <ActiveQuiz
               answers={this.state.quiz[this.state.activeQuestion].answers}
