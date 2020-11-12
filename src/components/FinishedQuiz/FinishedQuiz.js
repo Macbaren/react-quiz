@@ -2,6 +2,12 @@ import React from 'react'
 import classes from './FinishedQuiz.module.css'
 
 const FinishedQuiz = (props) => {
+  const successCount = Object.keys(props.results).reduce((total, key) => {
+    if (props.results[key] === 'success') {
+      total++
+    }
+    return total
+  }, 0)
   return (
     <div className={classes.FinishedQuiz}>
       <ul>
@@ -13,16 +19,18 @@ const FinishedQuiz = (props) => {
           ]
           return (
             <li key={index}>
-              <strong>{index + 1}</strong>&nbsp;
+              <strong>{index + 1}</strong>.&nbsp;
               {quizItem.question}
               <i className={cls.join(' ')} />
             </li>
           )
         })}
       </ul>
-      <p>3 from 5 was right</p>
+      <p>
+        {successCount} from {props.quiz.length} was right
+      </p>
       <div>
-        <button>Repeat</button>
+        <button onClick={props.onRetry}>Try again</button>
       </div>
     </div>
   )
