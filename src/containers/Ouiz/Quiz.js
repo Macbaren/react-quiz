@@ -7,7 +7,7 @@ class Quiz extends Component {
     results: {}, //{[id]: 'success', 'error'}
     isFinished: false,
     activeQuestion: 0,
-    answerState: null, // {[id]: 'success' 'error'} for colors changing
+    answerState: null, // {[id]: 'success', 'error'} for colors changing
     quiz: [
       {
         question: 'What color is the sky?',
@@ -43,10 +43,8 @@ class Quiz extends Component {
     const results = this.state.results
 
     if (question.rightAnswerId === answerId) {
-      if (results[answerId]) {
-        if (!results[answerId]) {
-          results[answerId] = 'success'
-        }
+      if (!results[answerId]) {
+        results[answerId] = 'success'
       }
       this.setState({
         answerState: { [answerId]: 'success' },
