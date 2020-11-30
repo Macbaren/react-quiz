@@ -28,7 +28,7 @@ class Quiz extends Component {
           { text: '1234', id: 1 },
           { text: '1345', id: 2 },
           { text: '1273', id: 3 },
-          { text: '1500', id: 4 },
+          { text: '1532', id: 4 },
         ],
       },
     ],
@@ -84,6 +84,10 @@ class Quiz extends Component {
       isFinished: false,
       results: {},
     })
+  }
+
+  componentDidMount() {
+    console.log('QUiz id = ', this.props.match.params.id)
   }
 
   render() {
