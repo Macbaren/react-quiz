@@ -3,11 +3,31 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import { BrowserRouter } from 'react-router-dom'
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
+import reduxThunk from 'redux-thunk'
 import rootReducer from './redux/rootReducer'
 
-const store = createStore(rootReducer)
+// function loggerMiddleWare(store) {
+//   return function (next) {
+//     return function (action) {
+//       const result = next(action)
+//       console.log('Middleware', store.getState())
+//       return result
+//     }
+//   }
+// }
+
+const loggerMiddleWare = (store) => (next) => (action) => {
+  const result = next(action)
+  console.log('Middleware', store.getState())
+  return result
+}
+
+const store = createStore(
+  rootReducer,
+  applyMiddleware(loggerMiddleWare, reduxThunk)
+)
 
 const app = (
   <Provider store={store}>

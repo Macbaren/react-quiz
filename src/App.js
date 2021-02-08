@@ -7,6 +7,7 @@ import QuizList from './containers/QuizList/QuizList'
 import QuizCreator from './containers/QuizCreator/QuizCreator'
 import Auth from './containers/Auth/Auth'
 import Counter from './Counter'
+import { add, sub, addNumber, asynkAdd } from './redux/actions/actions'
 
 class App extends Component {
   render() {
@@ -34,6 +35,11 @@ class App extends Component {
             Substract 12
           </button>
         </div>
+        <div className="Actions">
+          <button onClick={() => this.props.onAsynkAdd(100)}>
+            Async Add 100
+          </button>
+        </div>
 
         <Counter />
       </div>
@@ -49,9 +55,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    onAdd: () => dispatch({ type: 'ADD' }),
-    onSub: () => dispatch({ type: 'SUB' }),
-    onAddNumber: (number) => dispatch({ type: 'ADD_NUMBER', payload: number }),
+    onAdd: () => dispatch(add()),
+    onSub: () => dispatch(sub()),
+    onAddNumber: (number) => dispatch(addNumber(number)),
+    onAsynkAdd: (number) => dispatch(asynkAdd(number)),
   }
 }
 
